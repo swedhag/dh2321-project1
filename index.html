@@ -13,35 +13,47 @@
     <title>Project 1 - Groupings</title>
   </head>
   <style>
-  * {
-    font-family: "Helvetica Neue";
+  body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background: #bdc3c7;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
   }
   p, text {
+    font-weight:bold;
     font-size: 14px;
   }
   svg  {
-    background: #f1f1f1;
+    background: #bdc3c7;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    border: solid black 2px;
   }
   .active {
   stroke: #000;
   stroke-width: 2px;
   }
-  button {
-    float: left;
+  #filterDiv {
+    width:100%;
+  }
+  .inner {
     display: inline-block;
   }
   </style>
   <body>
-    <h1>Organize Project Groups</h1>
-    <div id ="filterD">
-      <p>Sort by: </p>
-      <input type="button" value="ProgrammingSkills" onclick="doSomething(this.value)"></button>
+    <h1>Organizer for Project Groups</h1>
+    <div id="filterDiv">
+      <p class="inner">Sort by: </p>
+      <input class="inner" type="button" value="ProgrammingSkills" onclick="setFilter(this.value)"></button>
     </div>
-    <svg width="960" height="500"></svg>
+    <svg width="1250" height="500"></svg>
     <script>
-    function doSomething(val){
+
+    function setFilter(val){
       update(val);
     }
+
     var dataArray = [];
 
     function update(val) {
@@ -90,7 +102,7 @@
     function drawVisualization(students, val) {
       //console.log(students[56].id);
       var filter = val;
-      //console.log(filter);
+      console.log("hej " + filter);
 
       var svg = d3.select("svg"),
           width = +svg.attr("width"),
@@ -98,7 +110,7 @@
           radius = 20 ;
 
       for (i = 0; i < students.length; i++){
-        console.log(students[i]);
+        //console.log(students[i]);
         var circles = d3.range(students.length).map(function() {
           return {
             x: Math.round(Math.random() * (width - radius * 2) + radius),
