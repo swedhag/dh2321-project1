@@ -9,7 +9,6 @@
     <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
     <script src="https://d3js.org/d3-selection.v1.min.js"></script>
     <script src="https://d3js.org/d3-drag.v1.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="index.css">
     <title>Project 1 - Groupings</title>
   </head>
   <style>
@@ -20,9 +19,10 @@
     background: linear-gradient(to right, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
   }
-  p, text {
+  p, text, input {
     font-weight:bold;
     font-size: 14px;
+    margin-right: 2%;
   }
   svg  {
     background: #bdc3c7;  /* fallback for old browsers */
@@ -40,87 +40,240 @@
   .inner {
     display: inline-block;
   }
+input {
+  background-color: white;
+  color: black;
+  border: 2px solid #555555;
+  background-color: #555555;
+  color: white;
+}
+
+input:hover {
+  background-color: white;
+  color: black;
+}
   </style>
   <body>
     <h1>Organizer for Project Groups</h1>
     <div id="filterDiv">
-      <p class="inner">Sort by: </p>
-      <input class="inner" type="button" value="ProgrammingSkills" onclick="setFilter(this.value)"></button>
+      <p class="inner">Sort by:</p>
+      <input class="inner" type="button" value="ProgrammingSkills" onclick="setFilter(this.value)"></input>
+      <input class="inner" type="button" value="InformationVisualizationSkills" onclick="setFilter(this.value)"></input>
+      <input class="inner" type="button" value="StatisticalSkills" onclick="setFilter(this.value)"></input>
+      <input class="inner" type="button" value="MathematicsSkills" onclick="setFilter(this.value)"></input>
+      <input class="inner" type="button" value="ArtisticSkills" onclick="setFilter(this.value)"></input>
+      <input class="inner" type="button" value="ComputerUsageSkills" onclick="setFilter(this.value)"></input>
+      <input class="inner" type="button" value="ComputerGraphicsProgrammingSkills" onclick="setFilter(this.value)"></input>
+      <input class="inner" type="button" value="HCIProgrammingSkills" onclick="setFilter(this.value)"></input>
+      <input class="inner" type="button" value="UXEvaluationSkills" onclick="setFilter(this.value)"></input>
+      <input class="inner" type="button" value="CommunicationSkills" onclick="setFilter(this.value)"></input>
+      <input class="inner" type="button" value="CollaborationSkills" onclick="setFilter(this.value)"></input>
+      <input class="inner" type="button" value="CodeRepositorySkills" onclick="setFilter(this.value)"></input>
     </div>
     <svg width="1250" height="500"></svg>
     <script>
 
     function setFilter(val){
+      d3.selectAll("circle").remove();
       update(val);
     }
 
     var dataArray = [];
+    var circles = [];
 
     function update(val) {
-      d3.csv("data.csv").then(function(data){
-        data.forEach(function(d) {
-          d["InformationVisualizationSkills"] = +d["InformationVisualizationSkills"]
-          d["StatisticalSkills"] = +d["StatisticalSkills"]
-          d["ArtisticSkills"] = +d["ArtisticSkills"];
-          d["MathematicsSkills"] = +d["MathematicsSkills"]
-          d["ComputerUsageSkills"] = +d["ComputerUsageSkills"]
-          d["ProgrammingSkills"] = +d["ProgrammingSkills"]
-          d["HCIProgrammingSkills"] = +d["HCIProgrammingSkills"]
-          d["UXEvaluationSkills"] = +d["UXEvaluationSkills"]
-          d["CommunicationSkills"] = +d["CommunicationSkills"]
-          d["CollaborationSkills"] = +d["CollaborationSkills"]
-          d["CodeRepositorySkills"] = +d["CodeRepositorySkills"]
-          //drawVisualization(d);
-          dataArray.push(d);
+      if (dataArray.length === 0) {
+        d3.csv("data.csv").then(function(data){
+          data.forEach(function(d) {
+            d["InformationVisualizationSkills"] = +d["InformationVisualizationSkills"]
+            d["StatisticalSkills"] = +d["StatisticalSkills"]
+            d["ArtisticSkills"] = +d["ArtisticSkills"];
+            d["MathematicsSkills"] = +d["MathematicsSkills"]
+            d["ComputerUsageSkills"] = +d["ComputerUsageSkills"]
+            d["ProgrammingSkills"] = +d["ProgrammingSkills"]
+            d["HCIProgrammingSkills"] = +d["HCIProgrammingSkills"]
+            d["UXEvaluationSkills"] = +d["UXEvaluationSkills"]
+            d["CommunicationSkills"] = +d["CommunicationSkills"]
+            d["CollaborationSkills"] = +d["CollaborationSkills"]
+            d["CodeRepositorySkills"] = +d["CodeRepositorySkills"]
+            //drawVisualization(d);
+            dataArray.push(d);
+          });
+          createCircles(dataArray, val);
         });
-        drawVisualization(dataArray, val);
-      });
+      }
+      else if (circles.length !== 0)  {
+        /*dataArray = [];
+        d3.csv("data.csv").then(function(data){
+          data.forEach(function(d) {
+            d["InformationVisualizationSkills"] = +d["InformationVisualizationSkills"]
+            d["StatisticalSkills"] = +d["StatisticalSkills"]
+            d["ArtisticSkills"] = +d["ArtisticSkills"];
+            d["MathematicsSkills"] = +d["MathematicsSkills"]
+            d["ComputerUsageSkills"] = +d["ComputerUsageSkills"]
+            d["ProgrammingSkills"] = +d["ProgrammingSkills"]
+            d["HCIProgrammingSkills"] = +d["HCIProgrammingSkills"]
+            d["UXEvaluationSkills"] = +d["UXEvaluationSkills"]
+            d["CommunicationSkills"] = +d["CommunicationSkills"]
+            d["CollaborationSkills"] = +d["CollaborationSkills"]
+            d["CodeRepositorySkills"] = +d["CodeRepositorySkills"]
+            //drawVisualization(d);
+            dataArray.push(d); */
+            //console.log(circles);
+            //console.log("denna borde funka");
+            updateCircles(dataArray, val, circles);
+      }
     }
-    //console.log(dataArray);
-  /*  var rows;
 
-    d3.csv("data.csv", function (d){
-      rows = d;
-      fixRows();
-    });
-
-    function fixRows() {
-      data.forEach(function(d) {
-        d["InformationVisualizationSkills"] = +d["InformationVisualizationSkills"]
-        d["StatisticalSkills"] = +d["StatisticalSkills"]
-        d["ArtisticSkills"] = +d["ArtisticSkills"];
-        d["MathematicsSkills"] = +d["MathematicsSkills"]
-        d["ComputerUsageSkills"] = +d["ComputerUsageSkills"]
-        d["ProgrammingSkills"] = +d["ProgrammingSkills"]
-        d["HCIProgrammingSkills"] = +d["HCIProgrammingSkills"]
-        d["UXEvaluationSkills"] = +d["UXEvaluationSkills"]
-        d["CommunicationSkills"] = +d["CommunicationSkills"]
-        d["CollaborationSkills"] = +d["CollaborationSkills"]
-        d["CodeRepositorySkills"] = +d["CodeRepositorySkills"]
-    })
-  }*/
-    function drawVisualization(students, val) {
-      //console.log(students[56].id);
+    function createCircles (dataArray, val) {
       var filter = val;
-      console.log("hej " + filter);
+      if (filter === "InformationVisualizationSkills"){
+        var radiusArray = dataArray.map(a => a.InformationVisualizationSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "StatisticalSkills"){
+        var radiusArray = dataArray.map(a => a.StatisticalSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "MathematicsSkills"){
+        var radiusArray = dataArray.map(a => a.MathematicsSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "ArtisticSkills"){
+        var radiusArray = dataArray.map(a => a.ArtisticSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "ComputerUsageSkills"){
+        var radiusArray = dataArray.map(a => a.ComputerUsageSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "ProgrammingSkills"){
+        var radiusArray = dataArray.map(a => a.ProgrammingSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "ComputerGraphicsProgrammingSkills"){
+        var radiusArray = dataArray.map(a => a.ComputerGraphicsProgrammingSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "HCIProgrammingSkills"){
+        var radiusArray = dataArray.map(a => a.HCIProgrammingSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "UXEvaluationSkills"){
+        var radiusArray = dataArray.map(a => a.UXEvaluationSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "CommunicationSkills"){
+        var radiusArray = dataArray.map(a => a.CommunicationSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "CollaborationSkills"){
+        var radiusArray = dataArray.map(a => a.CollaborationSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "CodeRepositorySkills"){
+        var radiusArray = dataArray.map(a => a.CodeRepositorySkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      for (i = 0; i < radiusArray.length; i++){
+        //console.log(dataArray[i].filter);
+        /*var circles = d3.range(radiusArray.length).map(function() {
+          console.log("tjena " + radiusArray[i]);
+          return */
+          circles.push({
+            x: Math.round(Math.random() * (1250 - 40) + 40),
+            y: Math.round(Math.random() * (500 - 40) + 40),
+            z: radiusArray[i],
+            id: idArray[i]
+          })
+        }
+        //console.log("hur ser circles ut här? " + circles[0].id + " " + circles[0].z );
+        drawVisualization(dataArray, circles);
+    }
+
+    function updateCircles (dataArray, val, circles) {
+      var filter = val;
+      if (filter === "InformationVisualizationSkills"){
+        var radiusArray = dataArray.map(a => a.InformationVisualizationSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "StatisticalSkills"){
+        var radiusArray = dataArray.map(a => a.StatisticalSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "MathematicsSkills"){
+        var radiusArray = dataArray.map(a => a.MathematicsSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "ArtisticSkills"){
+        var radiusArray = dataArray.map(a => a.ArtisticSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "ComputerUsageSkills"){
+        var radiusArray = dataArray.map(a => a.ComputerUsageSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "ProgrammingSkills"){
+        var radiusArray = dataArray.map(a => a.ProgrammingSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "ComputerGraphicsProgrammingSkills"){
+        var radiusArray = dataArray.map(a => a.ComputerGraphicsProgrammingSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "HCIProgrammingSkills"){
+        var radiusArray = dataArray.map(a => a.HCIProgrammingSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "UXEvaluationSkills"){
+        var radiusArray = dataArray.map(a => a.UXEvaluationSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "CommunicationSkills"){
+        var radiusArray = dataArray.map(a => a.CommunicationSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "CollaborationSkills"){
+        var radiusArray = dataArray.map(a => a.CollaborationSkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      if (filter === "CodeRepositorySkills"){
+        var radiusArray = dataArray.map(a => a.CodeRepositorySkills)
+        var idArray = dataArray.map(a => a.id)
+      }
+      for (i = 0; i < circles.length; i++){
+        circles[i].z = radiusArray[i];
+      }
+      //console.log("hur ser circles ut här då? " + circles[0].id + " " + circles[0].z );
+      drawVisualization(dataArray, circles);
+    }
+
+
+
+    function drawVisualization(students, circles) {
+      console.log("id: " + circles[0].id + " x: " + circles[0].x + " y: " + circles[0].y + " z: " + circles[0].z)
+
+      //console.log(students[56].id);
+      //var filter = val;
+      //console.log("hej " + filter);
 
       var svg = d3.select("svg"),
           width = +svg.attr("width"),
-          height = +svg.attr("height")
-          radius = 20 ;
+          height = +svg.attr("height") ;
+          //radius = 20 ;
 
+/*
       for (i = 0; i < students.length; i++){
         //console.log(students[i]);
         var circles = d3.range(students.length).map(function() {
           return {
-            x: Math.round(Math.random() * (width - radius * 2) + radius),
-            y: Math.round(Math.random() * (height - radius * 2) + radius),
-            z: filter,
-            array: students[i]
+            x: Math.round(Math.random() * (width - 40) + 40),
+            y: Math.round(Math.random() * (height - 40) + 40),
+            z: filter
           };
         });
       }
-      console.log(circles);
+      console.log(circles); */
 
 
 
@@ -134,7 +287,7 @@
         .enter().append("circle")
           .attr("cx", function(d) { return d.x; })
           .attr("cy", function(d) { return d.y; })
-          .attr("r", function(d, i) {return students[i].ProgrammingSkills + 5*students[i].ProgrammingSkills; })
+          .attr("r", function(d) {return d.z + 5*d.z; })
           .style("fill", function(d, i) { return color[i]; })
           .call(d3.drag()
               .on("start", dragstarted)
