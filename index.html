@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src="https://d3js.org/d3-queue.v3.min.js"></script>
+    <script src="https://d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
+    <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
+    <script src="https://d3js.org/d3-selection.v1.min.js"></script>
+    <script src="https://d3js.org/d3-drag.v1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <title>Project 1 - Groupings</title>
+  </head>
+  <style>
+  * {
+    font-family: "Helvetica Neue";
+  }
+  p, text {
+    font-size: 14px;
+  }
+  svg  {
+    background: #f1f1f1;
+  }
+  .active {
+  stroke: #000;
+  stroke-width: 2px;
+  }
+  button {
+    float: left;
+    display: inline-block;
+  }
+  </style>
+  <body>
+    <h1>Organize Project Groups</h1>
+    <div id ="filterD">
+      <p>Sort by: </p>
+      <input type="button" value="ProgrammingSkills" onclick="doSomething(this.value)"></button>
+    </div>
+    <svg width="960" height="500"></svg>
+    <script>
+    function doSomething(val){
+      update(val);
+    }
+    var dataArray = [];
+
+    function update(val) {
+      d3.csv("data.csv").then(function(data){
+        data.forEach(function(d) {
+          d["InformationVisualizationSkills"] = +d["InformationVisualizationSkills"]
+          d["StatisticalSkills"] = +d["StatisticalSkills"]
+          d["ArtisticSkills"] = +d["ArtisticSkills"];
+          d["MathematicsSkills"] = +d["MathematicsSkills"]
+          d["ComputerUsageSkills"] = +d["ComputerUsageSkills"]
+          d["ProgrammingSkills"] = +d["ProgrammingSkills"]
+          d["HCIProgrammingSkills"] = +d["HCIProgrammingSkills"]
+          d["UXEvaluationSkills"] = +d["UXEvaluationSkills"]
+          d["CommunicationSkills"] = +d["CommunicationSkills"]
+          d["CollaborationSkills"] = +d["CollaborationSkills"]
+          d["CodeRepositorySkills"] = +d["CodeRepositorySkills"]
+          //drawVisualization(d);
+          dataArray.push(d);
+        });
+        drawVisualization(dataArray, val);
+      });
+    }
+    //console.log(dataArray);
+  /*  var rows;
+
+    d3.csv("data.csv", function (d){
+      rows = d;
+      fixRows();
+    });
+
+    function fixRows() {
+      data.forEach(function(d) {
+        d["InformationVisualizationSkills"] = +d["InformationVisualizationSkills"]
+        d["StatisticalSkills"] = +d["StatisticalSkills"]
+        d["ArtisticSkills"] = +d["ArtisticSkills"];
+        d["MathematicsSkills"] = +d["MathematicsSkills"]
+        d["ComputerUsageSkills"] = +d["ComputerUsageSkills"]
+        d["ProgrammingSkills"] = +d["ProgrammingSkills"]
+        d["HCIProgrammingSkills"] = +d["HCIProgrammingSkills"]
+        d["UXEvaluationSkills"] = +d["UXEvaluationSkills"]
+        d["CommunicationSkills"] = +d["CommunicationSkills"]
+        d["CollaborationSkills"] = +d["CollaborationSkills"]
+        d["CodeRepositorySkills"] = +d["CodeRepositorySkills"]
+    })
+  }*/
+    function drawVisualization(students, val) {
+      //console.log(students[56].id);
+      var filter = val;
+      //console.log(filter);
+
+      var svg = d3.select("svg"),
+          width = +svg.attr("width"),
+          height = +svg.attr("height")
+          radius = 20 ;
+
+      for (i = 0; i < students.length; i++){
+        console.log(students[i]);
+        var circles = d3.range(students.length).map(function() {
+          return {
+            x: Math.round(Math.random() * (width - radius * 2) + radius),
+            y: Math.round(Math.random() * (height - radius * 2) + radius),
+            z: filter,
+            array: students[i]
+          };
+        });
+      }
+      console.log(circles);
+
+
+
+      var color = []
+      for (i = 0; i < circles.length; i++){
+        color.push("#"+((1<<24)*Math.random()|0).toString(16))
+      }
+
+      svg.selectAll("circle")
+        .data(circles)
+        .enter().append("circle")
+          .attr("cx", function(d) { return d.x; })
+          .attr("cy", function(d) { return d.y; })
+          .attr("r", function(d, i) {return students[i].ProgrammingSkills + 5*students[i].ProgrammingSkills; })
+          .style("fill", function(d, i) { return color[i]; })
+          .call(d3.drag()
+              .on("start", dragstarted)
+              .on("drag", dragged)
+              .on("end", dragended))
+          .append("title").text(function(d, i) {return students[i].id; })
+
+      function dragstarted(d) {
+        d3.select(this).raise().classed("active", true);
+      }
+
+      function dragged(d) {
+        d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
+      }
+
+      function dragended(d) {
+        d3.select(this).classed("active", false);
+      }
+    }
+    //drawVisualization();
+    </script>
+  </body>
+</html>
