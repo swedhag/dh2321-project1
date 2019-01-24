@@ -4,12 +4,13 @@ function setFilter(val){
 }
 
 function randomizeGroups(){
+  var oldCircles = circles;
   d3.selectAll("circle").remove();
   for (let i = circles.length - 1; i > 0; i--){
     const j = Math.floor(Math.random() * (i + 1));
     [circles[i], circles[j]] = [circles[j], circles[i]];
   }
-  console.log("id " + circles[56].id + " x: " + circles[56].x);
+  //console.log("id " + circles[56].id + " x: " + circles[56].x);
   for (i = 0; i < circles.length ; i++){
     if (i >= 0 && i < 6) {
       circles[i].x = 62.5;
@@ -40,6 +41,13 @@ function randomizeGroups(){
     }
     else if (i >= 52 && i <= 57) {
       circles[i].x = 1187.5;
+    }
+  }
+  for (i = 0; i < circles.length ; i++){
+    for (k = 0; i < oldCircles.length ; i++){
+      if (circles[i].id === oldCircles[k].id){
+        circles[i].z = oldCircles[k].z
+      }
     }
   }
   drawVisualization(circles);
@@ -82,9 +90,6 @@ function createCircles (dataArray) {
         color: color[i]
       });
   }
-  /*for (i = 0; i < circles.length; i++){
-    color.push("#"+((1<<24)*Math.random()|0).toString(16))
-  }*/
   drawVisualization(circles);
 }
 
@@ -138,15 +143,20 @@ function updateCircles (dataArray, val, circles) {
     var radiusArray = dataArray.map(a => a.CodeRepositorySkills)
     var idArray = dataArray.map(a => a.id)
   }
+  console.log(idArray);
   for (i = 0; i < circles.length; i++){
-    circles[i].z = radiusArray[i];
-  }
+    for (k = 0; k < idArray.length; k++){
+      if (idArray[k] === circles[i].id){
+          circles[i].z = radiusArray[k];
+      }
+    }
+  };
   drawVisualization(circles);
 }
 
 function drawVisualization(circles) {
 
-  console.log("id: " + circles[0].id + " x: " + circles[0].x + " y: " + circles[0].y + " z: " + circles[0].z);
+  //console.log("id: " + circles[0].id + " x: " + circles[0].x + " y: " + circles[0].y + " z: " + circles[0].z);
 
   var svg = d3.select("#canvas"),
       width = +svg.attr("width"),
@@ -155,6 +165,7 @@ function drawVisualization(circles) {
   svg.selectAll("circle")
     .data(circles)
     .enter().append("circle")
+      .attr("id", function(d) { return d.id })
       .attr("cx", function(d) { return d.x; })
       .attr("cy", function(d) { return d.y; })
       .attr("r", function(d) { return 5*d.z; })
