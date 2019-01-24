@@ -10,53 +10,12 @@
     <script src="https://d3js.org/d3-selection.v1.min.js"></script>
     <script src="https://d3js.org/d3-drag.v1.min.js"></script>
     <title>Project 1 - Groupings</title>
+    <link rel="stylesheet" type="text/css" href="design.css"/>
   </head>
-  <style>
-  body {
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-    background: #bdc3c7;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-  }
-  p, text, input {
-    font-weight:bold;
-    font-size: 14px;
-    margin-right: 2%;
-  }
-  svg  {
-    background: #bdc3c7;  /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to right, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    border: solid black 2px;
-  }
-  .active {
-  stroke: #000;
-  stroke-width: 2px;
-  }
-  #filterDiv {
-    width:100%;
-  }
-  .inner {
-    display: inline-block;
-  }
-input {
-  background-color: white;
-  color: black;
-  border: 2px solid #555555;
-  background-color: #555555;
-  color: white;
-}
-
-input:hover {
-  background-color: white;
-  color: black;
-}
-  </style>
   <body>
     <h1>Organizer for Project Groups</h1>
     <div id="filterDiv">
-      <p class="inner">Sort by:</p>
+      <p class="inner">Resize the circles representing students by:</p>
       <input class="inner" type="button" value="ProgrammingSkills" onclick="setFilter(this.value)"></input>
       <input class="inner" type="button" value="InformationVisualizationSkills" onclick="setFilter(this.value)"></input>
       <input class="inner" type="button" value="StatisticalSkills" onclick="setFilter(this.value)"></input>
@@ -70,231 +29,31 @@ input:hover {
       <input class="inner" type="button" value="CollaborationSkills" onclick="setFilter(this.value)"></input>
       <input class="inner" type="button" value="CodeRepositorySkills" onclick="setFilter(this.value)"></input>
     </div>
-    <svg width="1250" height="500"></svg>
-    <script>
-
-    function setFilter(val){
-      d3.selectAll("circle").remove();
-      update(val);
-    }
-
-    var dataArray = [];
-    var circles = [];
-    var color = [];
-
-    function update(val) {
-      if (dataArray.length === 0) {
-        d3.csv("data.csv").then(function(data){
-          data.forEach(function(d) {
-            d["InformationVisualizationSkills"] = +d["InformationVisualizationSkills"]
-            d["StatisticalSkills"] = +d["StatisticalSkills"]
-            d["ArtisticSkills"] = +d["ArtisticSkills"];
-            d["MathematicsSkills"] = +d["MathematicsSkills"]
-            d["ComputerUsageSkills"] = +d["ComputerUsageSkills"]
-            d["ProgrammingSkills"] = +d["ProgrammingSkills"]
-            d["HCIProgrammingSkills"] = +d["HCIProgrammingSkills"]
-            d["UXEvaluationSkills"] = +d["UXEvaluationSkills"]
-            d["CommunicationSkills"] = +d["CommunicationSkills"]
-            d["CollaborationSkills"] = +d["CollaborationSkills"]
-            d["CodeRepositorySkills"] = +d["CodeRepositorySkills"]
-            //drawVisualization(d);
-            dataArray.push(d);
-          });
-          createCircles(dataArray, val);
-        });
-      }
-      else if (circles.length !== 0)  {
-        /*dataArray = [];
-        d3.csv("data.csv").then(function(data){
-          data.forEach(function(d) {
-            d["InformationVisualizationSkills"] = +d["InformationVisualizationSkills"]
-            d["StatisticalSkills"] = +d["StatisticalSkills"]
-            d["ArtisticSkills"] = +d["ArtisticSkills"];
-            d["MathematicsSkills"] = +d["MathematicsSkills"]
-            d["ComputerUsageSkills"] = +d["ComputerUsageSkills"]
-            d["ProgrammingSkills"] = +d["ProgrammingSkills"]
-            d["HCIProgrammingSkills"] = +d["HCIProgrammingSkills"]
-            d["UXEvaluationSkills"] = +d["UXEvaluationSkills"]
-            d["CommunicationSkills"] = +d["CommunicationSkills"]
-            d["CollaborationSkills"] = +d["CollaborationSkills"]
-            d["CodeRepositorySkills"] = +d["CodeRepositorySkills"]
-            //drawVisualization(d);
-            dataArray.push(d); */
-            //console.log(circles);
-            //console.log("denna borde funka");
-            updateCircles(dataArray, val, circles);
-      }
-    }
-
-    function createCircles (dataArray, val) {
-      var filter = val;
-      if (filter === "InformationVisualizationSkills"){
-        var radiusArray = dataArray.map(a => a.InformationVisualizationSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "StatisticalSkills"){
-        var radiusArray = dataArray.map(a => a.StatisticalSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "MathematicsSkills"){
-        var radiusArray = dataArray.map(a => a.MathematicsSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "ArtisticSkills"){
-        var radiusArray = dataArray.map(a => a.ArtisticSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "ComputerUsageSkills"){
-        var radiusArray = dataArray.map(a => a.ComputerUsageSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "ProgrammingSkills"){
-        var radiusArray = dataArray.map(a => a.ProgrammingSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "ComputerGraphicsProgrammingSkills"){
-        var radiusArray = dataArray.map(a => a.ComputerGraphicsProgrammingSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "HCIProgrammingSkills"){
-        var radiusArray = dataArray.map(a => a.HCIProgrammingSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "UXEvaluationSkills"){
-        var radiusArray = dataArray.map(a => a.UXEvaluationSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "CommunicationSkills"){
-        var radiusArray = dataArray.map(a => a.CommunicationSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "CollaborationSkills"){
-        var radiusArray = dataArray.map(a => a.CollaborationSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "CodeRepositorySkills"){
-        var radiusArray = dataArray.map(a => a.CodeRepositorySkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      for (i = 0; i < radiusArray.length; i++){
-        //console.log(dataArray[i].filter);
-        /*var circles = d3.range(radiusArray.length).map(function() {
-          console.log("tjena " + radiusArray[i]);
-          return */
-          circles.push({
-            x: Math.round(Math.random() * (1250 - 40) + 40),
-            y: Math.round(Math.random() * (500 - 40) + 40),
-            z: radiusArray[i],
-            id: idArray[i]
-          })
-      }
-      for (i = 0; i < circles.length; i++){
-        color.push("#"+((1<<24)*Math.random()|0).toString(16))
-      }
-        //console.log("hur ser circles ut här? " + circles[0].id + " " + circles[0].z );
-        drawVisualization(circles,color);
-    }
-
-    function updateCircles (dataArray, val, circles) {
-      var filter = val;
-      if (filter === "InformationVisualizationSkills"){
-        var radiusArray = dataArray.map(a => a.InformationVisualizationSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "StatisticalSkills"){
-        var radiusArray = dataArray.map(a => a.StatisticalSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "MathematicsSkills"){
-        var radiusArray = dataArray.map(a => a.MathematicsSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "ArtisticSkills"){
-        var radiusArray = dataArray.map(a => a.ArtisticSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "ComputerUsageSkills"){
-        var radiusArray = dataArray.map(a => a.ComputerUsageSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "ProgrammingSkills"){
-        var radiusArray = dataArray.map(a => a.ProgrammingSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "ComputerGraphicsProgrammingSkills"){
-        var radiusArray = dataArray.map(a => a.ComputerGraphicsProgrammingSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "HCIProgrammingSkills"){
-        var radiusArray = dataArray.map(a => a.HCIProgrammingSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "UXEvaluationSkills"){
-        var radiusArray = dataArray.map(a => a.UXEvaluationSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "CommunicationSkills"){
-        var radiusArray = dataArray.map(a => a.CommunicationSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "CollaborationSkills"){
-        var radiusArray = dataArray.map(a => a.CollaborationSkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      if (filter === "CodeRepositorySkills"){
-        var radiusArray = dataArray.map(a => a.CodeRepositorySkills)
-        var idArray = dataArray.map(a => a.id)
-      }
-      for (i = 0; i < circles.length; i++){
-        circles[i].z = radiusArray[i];
-      }
-      //console.log("hur ser circles ut här då? " + circles[0].id + " " + circles[0].z );
-      drawVisualization(circles,color);
-    }
-
-
-
-    function drawVisualization(circles,color) {
-      console.log("id: " + circles[0].id + " x: " + circles[0].x + " y: " + circles[0].y + " z: " + circles[0].z)
-
-      var svg = d3.select("svg"),
-          width = +svg.attr("width"),
-          height = +svg.attr("height") ;
-          //radius = 20 ;
-
-
-
-      /*var color = []
-      for (i = 0; i < circles.length; i++){
-        color.push("#"+((1<<24)*Math.random()|0).toString(16))
-      }*/
-
-      svg.selectAll("circle")
-        .data(circles)
-        .enter().append("circle")
-          .attr("cx", function(d) { return d.x; })
-          .attr("cy", function(d) { return d.y; })
-          .attr("r", function(d) {return d.z + 5*d.z; })
-          .style("fill", function(d, i) { return color[i]; })
-          .call(d3.drag()
-              .on("start", dragstarted)
-              .on("drag", dragged)
-              .on("end", dragended))
-          .append("title").text(function(d) {return d.id; })
-
-      function dragstarted(d) {
-        d3.select(this).raise().classed("active", true);
-      }
-
-      function dragged(d) {
-        d3.select(this).attr("cx", d.x = d3.event.x).attr("cy", d.y = d3.event.y);
-      }
-
-      function dragended(d) {
-        d3.select(this).classed("active", false);
-      }
-    }
-    //drawVisualization();
-    </script>
+    <svg id="svgHeader" width="1250" height="20">
+      <text x="35" y="15" font-family="Helvetica" font-size="14" fill="black">Group 1</text>
+      <text x="160" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
+      <text x="285" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
+      <text x="410" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
+      <text x="535" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
+      <text x="660" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
+      <text x="785" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
+      <text x="910" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
+      <text x="1035" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
+      <text x="1160" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
+    </svg>
+    <svg id="canvas" width="1250" height="500">
+      <g fill="none" stroke="black" stroke-width="4" style="opacity: 0.5;">
+        <path stroke-dasharray="5,5" d="M125 3 l0 500" />
+        <path stroke-dasharray="5,5" d="M250 3 l0 500" />
+        <path stroke-dasharray="5,5" d="M375 3 l0 500" />
+        <path stroke-dasharray="5,5" d="M500 3 l0 500" />
+        <path stroke-dasharray="5,5" d="M625 3 l0 500" />
+        <path stroke-dasharray="5,5" d="M750 3 l0 500" />
+        <path stroke-dasharray="5,5" d="M875 3 l0 500" />
+        <path stroke-dasharray="5,5" d="M1000 3 l0 500" />
+        <path stroke-dasharray="5,5" d="M1125 3 l0 500" />
+      </g>
+    </svg>
+    <script src="app.js"></script>
   </body>
 </html>

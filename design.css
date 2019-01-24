@@ -1,0 +1,51 @@
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background: #bdc3c7;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+
+}
+h1{
+  width: 100%;
+  text-align:center;
+}
+p, text, input {
+  font-size: 14px;
+  font-weight:bold;
+  margin-right: 2%;
+}
+
+svg  {
+  background: #bdc3c7;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #2c3e50, #bdc3c7);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #2c3e50, #bdc3c7); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  border: solid black 2px;
+}
+.active {
+stroke: #000;
+stroke-width: 2px;
+}
+#filterDiv {
+  width:100%;
+}
+.inner {
+  display: inline-block;
+}
+input {
+background-color: white;
+color: black;
+border: 2px solid #555555;
+background-color: #555555;
+color: white;
+margin-bottom:14px;
+}
+
+input:hover {
+background-color: white;
+color: black;
+}
+
+#svgHeader {
+border-bottom: none;
+margin-bottom: -4px;
+}
