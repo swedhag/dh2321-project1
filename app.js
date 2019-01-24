@@ -3,9 +3,50 @@ function setFilter(val){
   updateCircles(dataArray, val, circles);
 }
 
+function randomizeGroups(){
+  d3.selectAll("circle").remove();
+  for (let i = circles.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [circles[i], circles[j]] = [circles[j], circles[i]];
+  }
+  console.log("id " + circles[56].id + " x: " + circles[56].x);
+  for (i = 0; i < circles.length ; i++){
+    if (i >= 0 && i < 6) {
+      circles[i].x = 62.5;
+    }
+    else if (i >= 6 && i < 12) {
+      circles[i].x = 187.5;
+    }
+    else if (i >= 12 && i < 18) {
+      circles[i].x = 312.5;
+    }
+    else if (i >= 18 && i < 24) {
+      circles[i].x = 437.5;
+    }
+    else if (i >= 24 && i < 30) {
+      circles[i].x = 562.5;
+    }
+    else if (i >= 30 && i < 36) {
+      circles[i].x = 687.5;
+    }
+    else if (i >= 36 && i < 42) {
+      circles[i].x = 812.5;
+    }
+    else if (i >= 42 && i < 47) {
+      circles[i].x = 937.5;
+    }
+    else if (i >= 47 && i < 52) {
+      circles[i].x = 1062.5;
+    }
+    else if (i >= 52 && i <= 57) {
+      circles[i].x = 1187.5;
+    }
+  }
+  drawVisualization(circles);
+}
+
 var dataArray = [];
 var circles = [];
-var color = [];
 
 d3.csv("data.csv").then(function(data){
   data.forEach(function(d) {
@@ -28,18 +69,23 @@ d3.csv("data.csv").then(function(data){
 
 function createCircles (dataArray) {
   var idArray = dataArray.map(a => a.id);
+  var color = [];
+  for (i = 0; i < dataArray.length; i++){
+    color.push("#"+((1<<24)*Math.random()|0).toString(16))
+  }
   for (i = 0; i < dataArray.length; i++){
       circles.push({
         x: Math.round(Math.random() * (1250 - 40) + 40),
         y: Math.round(Math.random() * (500 - 40) + 40),
         z: 5,
-        id: idArray[i]
-      })
+        id: idArray[i],
+        color: color[i]
+      });
   }
-  for (i = 0; i < circles.length; i++){
+  /*for (i = 0; i < circles.length; i++){
     color.push("#"+((1<<24)*Math.random()|0).toString(16))
-  }
-  drawVisualization(circles,color);
+  }*/
+  drawVisualization(circles);
 }
 
 function updateCircles (dataArray, val, circles) {
@@ -95,10 +141,11 @@ function updateCircles (dataArray, val, circles) {
   for (i = 0; i < circles.length; i++){
     circles[i].z = radiusArray[i];
   }
-  drawVisualization(circles,color);
+  drawVisualization(circles);
 }
 
-function drawVisualization(circles,color) {
+function drawVisualization(circles) {
+
   console.log("id: " + circles[0].id + " x: " + circles[0].x + " y: " + circles[0].y + " z: " + circles[0].z);
 
   var svg = d3.select("#canvas"),
@@ -111,7 +158,7 @@ function drawVisualization(circles,color) {
       .attr("cx", function(d) { return d.x; })
       .attr("cy", function(d) { return d.y; })
       .attr("r", function(d) { return 5*d.z; })
-      .style("fill", function(d, i) { return color[i]; })
+      .style("fill", function(d) { return d.color })
       .call(d3.drag()
           .on("start", dragstarted)
           .on("drag", dragged)

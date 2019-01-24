@@ -4,16 +4,13 @@
   <head>
     <meta charset="utf-8">
     <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="https://d3js.org/d3-queue.v3.min.js"></script>
-    <script src="https://d3js.org/d3-scale-chromatic.v0.3.min.js"></script>
-    <script src="https://d3js.org/d3-dispatch.v1.min.js"></script>
-    <script src="https://d3js.org/d3-selection.v1.min.js"></script>
     <script src="https://d3js.org/d3-drag.v1.min.js"></script>
     <title>Project 1 - Groupings</title>
     <link rel="stylesheet" type="text/css" href="design.css"/>
   </head>
   <body>
     <h1>Organizer for Project Groups</h1>
+    <button onclick="randomizeGroups()">Randomize Groupings</button>
     <div id="filterDiv">
       <p class="inner">Resize the circles representing students by:</p>
       <input class="inner" type="button" value="ProgrammingSkills" onclick="setFilter(this.value)"></input>
@@ -32,14 +29,14 @@
     <svg id="svgHeader" width="1250" height="20">
       <text x="35" y="15" font-family="Helvetica" font-size="14" fill="black">Group 1</text>
       <text x="160" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
-      <text x="285" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
-      <text x="410" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
-      <text x="535" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
-      <text x="660" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
-      <text x="785" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
-      <text x="910" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
-      <text x="1035" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
-      <text x="1160" y="15" font-family="Helvetica" font-size="14" fill="black">Group 2</text>
+      <text x="285" y="15" font-family="Helvetica" font-size="14" fill="black">Group 3</text>
+      <text x="410" y="15" font-family="Helvetica" font-size="14" fill="black">Group 4</text>
+      <text x="535" y="15" font-family="Helvetica" font-size="14" fill="black">Group 5</text>
+      <text x="660" y="15" font-family="Helvetica" font-size="14" fill="black">Group 6</text>
+      <text x="785" y="15" font-family="Helvetica" font-size="14" fill="black">Group 7</text>
+      <text x="910" y="15" font-family="Helvetica" font-size="14" fill="black">Group 8</text>
+      <text x="1035" y="15" font-family="Helvetica" font-size="14" fill="black">Group 9</text>
+      <text x="1160" y="15" font-family="Helvetica" font-size="14" fill="black">Group 10</text>
     </svg>
     <svg id="canvas" width="1250" height="500">
       <g fill="none" stroke="black" stroke-width="4" style="opacity: 0.5;">

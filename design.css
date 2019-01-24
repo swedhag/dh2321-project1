@@ -9,7 +9,7 @@ h1{
   width: 100%;
   text-align:center;
 }
-p, text, input {
+p, text, input, button {
   font-size: 14px;
   font-weight:bold;
   margin-right: 2%;
@@ -33,7 +33,7 @@ stroke-width: 2px;
 .inner {
   display: inline-block;
 }
-input {
+input, button {
 background-color: white;
 color: black;
 border: 2px solid #555555;
