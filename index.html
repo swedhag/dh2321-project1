@@ -9,23 +9,33 @@
     <link rel="stylesheet" type="text/css" href="design.css"/>
   </head>
   <body>
-    <h1>Organizer for Project Groups</h1>
-    <button onclick="randomizeGroups()">Randomize Groupings</button>
-    <button onclick="groupByInterests()">Group By Interests</button>
-    <div id="filterDiv">
-      <p class="inner">Resize the circles representing students by:</p>
-      <input class="inner" type="button" value="ProgrammingSkills" onclick="setFilter(this.value)"></input>
-      <input class="inner" type="button" value="InformationVisualizationSkills" onclick="setFilter(this.value)"></input>
-      <input class="inner" type="button" value="StatisticalSkills" onclick="setFilter(this.value)"></input>
-      <input class="inner" type="button" value="MathematicsSkills" onclick="setFilter(this.value)"></input>
-      <input class="inner" type="button" value="ArtisticSkills" onclick="setFilter(this.value)"></input>
-      <input class="inner" type="button" value="ComputerUsageSkills" onclick="setFilter(this.value)"></input>
-      <input class="inner" type="button" value="ComputerGraphicsProgrammingSkills" onclick="setFilter(this.value)"></input>
-      <input class="inner" type="button" value="HCIProgrammingSkills" onclick="setFilter(this.value)"></input>
-      <input class="inner" type="button" value="UXEvaluationSkills" onclick="setFilter(this.value)"></input>
-      <input class="inner" type="button" value="CommunicationSkills" onclick="setFilter(this.value)"></input>
-      <input class="inner" type="button" value="CollaborationSkills" onclick="setFilter(this.value)"></input>
-      <input class="inner" type="button" value="CodeRepositorySkills" onclick="setFilter(this.value)"></input>
+    <div class="banner-text">
+      <h1>Organizer for Project Groups</h1>
+    </div>
+    <div id="buttonInteraction">
+      <div id="groupDiv">
+        <p>Tip: Each student is represented by a circle. Hovering over circles displays student name and interests!</p>
+        <button class="inner" onclick="randomizeGroups()">Randomize Groupings</button>
+        <p style="margin-left:10px; margin-right:10px; display:inline-block">or</p>
+        <button class="inner" onclick="groupByInterests()">Group By Interests</button>
+        <p class="closing">Tip: You could also organize project groups by dragging and dropping the circles by yourself.</p>
+      </div>
+      <div id="filterDiv">
+        <p>Resize the circles representing students by:</p>
+        <input class="inner" type="button" value="ProgrammingSkills" onclick="setFilter(this.value)"></input>
+        <input class="inner" type="button" value="InformationVisualizationSkills" onclick="setFilter(this.value)"></input>
+        <input class="inner" type="button" value="StatisticalSkills" onclick="setFilter(this.value)"></input>
+        <input class="inner" type="button" value="MathematicsSkills" onclick="setFilter(this.value)"></input>
+        <input class="inner" type="button" value="ArtisticSkills" onclick="setFilter(this.value)"></input>
+        <input class="inner" type="button" value="ComputerUsageSkills" onclick="setFilter(this.value)"></input>
+        <input class="inner" type="button" value="ComputerGraphicsProgrammingSkills" onclick="setFilter(this.value)"></input>
+        <input class="inner" type="button" value="HCIProgrammingSkills" onclick="setFilter(this.value)"></input>
+        <input class="inner" type="button" value="UXEvaluationSkills" onclick="setFilter(this.value)"></input>
+        <input class="inner" type="button" value="CommunicationSkills" onclick="setFilter(this.value)"></input>
+        <input class="inner" type="button" value="CollaborationSkills" onclick="setFilter(this.value)"></input>
+        <input class="inner" type="button" value="CodeRepositorySkills" onclick="setFilter(this.value)"></input>
+        <p class="closing">Tip: The bigger the circle, the bigger the skill set in this specific area of expertise!</p>
+      </div>
     </div>
     <svg id="svgHeader" width="1250" height="20">
       <text x="35" y="15" font-family="Helvetica" font-size="14" fill="black">Group 1</text>
