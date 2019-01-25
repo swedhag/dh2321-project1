@@ -1,6 +1,43 @@
-function setFilter(val){
-  d3.selectAll("circle").remove();
-  updateCircles(dataArray, val, circles);
+
+var dataArray = [];
+var circles = [];
+
+d3.csv("data.csv").then(function(data){
+  data.forEach(function(d) {
+    d["InformationVisualizationSkills"] = +d["InformationVisualizationSkills"]
+    d["StatisticalSkills"] = +d["StatisticalSkills"]
+    d["ArtisticSkills"] = +d["ArtisticSkills"];
+    d["MathematicsSkills"] = +d["MathematicsSkills"]
+    d["ComputerUsageSkills"] = +d["ComputerUsageSkills"]
+    d["ProgrammingSkills"] = +d["ProgrammingSkills"]
+    d["HCIProgrammingSkills"] = +d["HCIProgrammingSkills"]
+    d["UXEvaluationSkills"] = +d["UXEvaluationSkills"]
+    d["CommunicationSkills"] = +d["CommunicationSkills"]
+    d["CollaborationSkills"] = +d["CollaborationSkills"]
+    d["CodeRepositorySkills"] = +d["CodeRepositorySkills"]
+    dataArray.push(d);
+  })
+  createCircles(dataArray);
+});
+
+
+function createCircles (dataArray) {
+  var idArray = dataArray.map(a => a.id);
+  var color = [];
+  for (i = 0; i < dataArray.length; i++){
+    color.push("#"+((1<<24)*Math.random()|0).toString(16))
+  }
+  for (i = 0; i < dataArray.length; i++){
+      circles.push({
+        x: Math.round(Math.random() * (1250 - 40) + 40),
+        y: Math.round(Math.random() * (500 - 40) + 40),
+        z: 5,
+        id: idArray[i],
+        color: color[i],
+        interests: dataArray[i].Interests
+      });
+  }
+  drawVisualization(circles);
 }
 
 function randomizeGroups(){
@@ -53,44 +90,47 @@ function randomizeGroups(){
   drawVisualization(circles);
 }
 
-var dataArray = [];
-var circles = [];
-
-d3.csv("data.csv").then(function(data){
-  data.forEach(function(d) {
-    d["InformationVisualizationSkills"] = +d["InformationVisualizationSkills"]
-    d["StatisticalSkills"] = +d["StatisticalSkills"]
-    d["ArtisticSkills"] = +d["ArtisticSkills"];
-    d["MathematicsSkills"] = +d["MathematicsSkills"]
-    d["ComputerUsageSkills"] = +d["ComputerUsageSkills"]
-    d["ProgrammingSkills"] = +d["ProgrammingSkills"]
-    d["HCIProgrammingSkills"] = +d["HCIProgrammingSkills"]
-    d["UXEvaluationSkills"] = +d["UXEvaluationSkills"]
-    d["CommunicationSkills"] = +d["CommunicationSkills"]
-    d["CollaborationSkills"] = +d["CollaborationSkills"]
-    d["CodeRepositorySkills"] = +d["CodeRepositorySkills"]
-    dataArray.push(d);
-  })
-  createCircles(dataArray);
-});
-
-
-function createCircles (dataArray) {
-  var idArray = dataArray.map(a => a.id);
-  var color = [];
-  for (i = 0; i < dataArray.length; i++){
-    color.push("#"+((1<<24)*Math.random()|0).toString(16))
-  }
-  for (i = 0; i < dataArray.length; i++){
-      circles.push({
-        x: Math.round(Math.random() * (1250 - 40) + 40),
-        y: Math.round(Math.random() * (500 - 40) + 40),
-        z: 5,
-        id: idArray[i],
-        color: color[i]
-      });
+function groupByInterests(){
+  console.log("hello");
+  d3.selectAll("circle").remove();
+  for (i = 0; i < circles.length ; i++){
+    if (circles[i].interests === "Art") {
+      circles[i].x = 62.5;
+    }
+    else if (circles[i].interests === "Football") {
+      circles[i].x = 562.5;
+    }
+    else if (circles[i].interests === "Gaming") {
+      circles[i].x = 187.5;
+    }
+    else if (circles[i].interests === "Graphics") {
+      circles[i].x = 312.5;
+    }
+    else if (circles[i].interests === "Gym") {
+      circles[i].x = 1187.5;
+    }
+    else if (circles[i].interests === "Music") {
+      circles[i].x = 437.5;
+    }
+    else if (circles[i].interests === "Nothing in particular") {
+      circles[i].x = 687.5;
+    }
+    else if (circles[i].interests === "Programming") {
+      circles[i].x = 812.5;
+    }
+    else if (circles[i].interests === "Reading/Travel") {
+      circles[i].x = 937.5;
+    }
+    else if (circles[i].interests === "Sports") {
+      circles[i].x = 1062.5;
+    }
   }
   drawVisualization(circles);
+}
+
+function setFilter(val){
+  d3.selectAll("circle").remove();
+  updateCircles(dataArray, val, circles);
 }
 
 function updateCircles (dataArray, val, circles) {
@@ -155,7 +195,6 @@ function updateCircles (dataArray, val, circles) {
 }
 
 function drawVisualization(circles) {
-
   //console.log("id: " + circles[0].id + " x: " + circles[0].x + " y: " + circles[0].y + " z: " + circles[0].z);
 
   var svg = d3.select("#canvas"),
@@ -174,7 +213,7 @@ function drawVisualization(circles) {
           .on("start", dragstarted)
           .on("drag", dragged)
           .on("end", dragended))
-      .append("title").text(function(d) {return d.id; })
+      .append("title").text(function(d) {return ("Name: " + d.id + "\nInterests: "  + d.interests); })
 
   function dragstarted(d) {
     d3.select(this).raise().classed("active", true);
