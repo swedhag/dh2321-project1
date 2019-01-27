@@ -199,6 +199,10 @@ function drawVisualization(circles) {
       width = +svg.attr("width"),
       height = +svg.attr("height") ;
 
+  circles.sort(function(a, b) {
+    return b.z - a.z
+  });
+
   svg.selectAll("circle")
     .data(circles)
     .enter().append("circle")
