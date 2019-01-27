@@ -195,8 +195,6 @@ function updateCircles (dataArray, val, circles) {
 }
 
 function drawVisualization(circles) {
-  //console.log("id: " + circles[0].id + " x: " + circles[0].x + " y: " + circles[0].y + " z: " + circles[0].z);
-
   var svg = d3.select("#canvas"),
       width = +svg.attr("width"),
       height = +svg.attr("height") ;
